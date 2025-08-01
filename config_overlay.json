@@ -1,7 +1,7 @@
 {
-    "fuente": "Arial",
-    "tama\u00f1o_fuente": 12,
+    "fuente": "Courier",
+    "tama\u00f1o_fuente": 16,
     "color_fondo": "white",
     "color_texto": "black",
-    "opacidad": 0.6
+    "opacidad": 0.8
 }

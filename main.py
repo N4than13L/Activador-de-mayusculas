@@ -137,8 +137,8 @@ ventana.configure(bg=config["color_fondo"])
 # Tamaño inicial basado en fuente
 ancho_inicial = max(200, config["tamaño_fuente"] * 18)
 alto_inicial = max(50, config["tamaño_fuente"] * 5)
-pos_x = ventana.winfo_screenwidth() - ancho_inicial - 10
-pos_y = ventana.winfo_screenheight() - alto_inicial - 50
+pos_x = ventana.winfo_screenwidth() - ancho_inicial - 60
+pos_y = ventana.winfo_screenheight() - alto_inicial - 60
 ventana.geometry(f"{ancho_inicial}x{alto_inicial}+{pos_x}+{pos_y}")
 
 # Etiqueta principal
