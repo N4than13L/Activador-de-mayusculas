@@ -28,8 +28,16 @@ def cargar_config():
 
 # --- Guardar configuración ---
 def guardar_config():
+    # Solo guarda fuente, tamaño, color y opacidad (NO tema)
+    data = {
+        "fuente": config["fuente"],
+        "tamaño_fuente": config["tamaño_fuente"],
+        "color_fondo": config["color_fondo"],
+        "color_texto": config["color_texto"],
+        "opacidad": config["opacidad"]
+    }
     with open(CONFIG_FILE, "w") as f:
-        json.dump(config, f, indent=4)
+        json.dump(data, f, indent=4)
 
 # Cargar configuración inicial
 config = cargar_config()
@@ -42,7 +50,6 @@ if SO == "Windows":
     import ctypes
     def capslock_activo():
         return bool(ctypes.WinDLL("User32.dll").GetKeyState(0x14) & 1)
-
 elif SO == "Linux":
     import subprocess
     def capslock_activo():
@@ -51,7 +58,6 @@ elif SO == "Linux":
             return "on" in estado
         except:
             return False
-
 elif SO == "Darwin":  # macOS
     import subprocess
     def capslock_activo():
@@ -93,19 +99,17 @@ def cerrar_overlay():
     ventana.destroy()
     sys.exit(0)
 
-# --- Cambiar tema ---
+# --- Cambiar tema (solo cambia visual, NO guarda en config) ---
 def cambiar_tema(nombre, fondo, texto):
-    config["color_fondo"] = fondo
-    config["color_texto"] = texto
-    tema_var.set(nombre)  # Marca seleccionado
+    tema_var.set(nombre)  # Marca seleccionado en menú
     ventana.configure(bg=fondo)
     etiqueta.configure(bg=fondo, fg=texto)
-    guardar_config()
+    # No guardamos en config
 
 # --- Cambiar opacidad ---
 def cambiar_opacidad(nombre, valor):
     config["opacidad"] = valor
-    opacidad_var.set(nombre)  # Marca seleccionado
+    opacidad_var.set(nombre)
     ventana.attributes("-alpha", valor)
     guardar_config()
 
@@ -113,7 +117,7 @@ def cambiar_opacidad(nombre, valor):
 def cambiar_tipografia(nombre, fuente, tamaño):
     config["fuente"] = fuente
     config["tamaño_fuente"] = tamaño
-    tipografia_var.set(nombre)  # Marca seleccionado
+    tipografia_var.set(nombre)
     etiqueta.config(font=(fuente, tamaño))
     guardar_config()
 
@@ -163,11 +167,11 @@ menu_opciones = tk.Menu(ventana, tearoff=0, bg="gray15", fg="white",
 menu_opciones.add_command(label="Cerrar", command=cerrar_overlay)
 
 # Variables de control para selección
-tema_var = tk.StringVar(value=config["color_fondo"])
+tema_var = tk.StringVar(value="Oscuro (Negro)")  # Siempre inicia en oscuro
 opacidad_var = tk.StringVar(value=f"{int(config['opacidad']*100)}%")
 tipografia_var = tk.StringVar(value=f"{config['fuente']} {config['tamaño_fuente']}")
 
-# Submenú: Cambiar tema con vista previa
+# Submenú: Cambiar tema
 menu_tema = tk.Menu(menu_opciones, tearoff=0)
 temas = [
     ("Oscuro (Negro)", "black", "white"),
@@ -183,14 +187,14 @@ for nombre, fondo, texto in temas:
     menu_tema.add_radiobutton(
         label=nombre,
         variable=tema_var,
-        value=fondo,
+        value=nombre,
         command=lambda n=nombre, f=fondo, t=texto: cambiar_tema(n, f, t),
         foreground=texto,
         background=fondo if fondo != "white" else "gray90",
         font=("Arial", 11)
     )
 
-# Submenú: Cambiar opacidad
+# Submenú: Opacidad
 menu_opacidad = tk.Menu(menu_opciones, tearoff=0)
 niveles_opacidad = [
     ("100%", 1.0),
@@ -207,7 +211,7 @@ for nombre, valor in niveles_opacidad:
         font=("Arial", 11)
     )
 
-# Submenú: Tipografía con vista previa
+# Submenú: Tipografía
 menu_fuente = tk.Menu(menu_opciones, tearoff=0)
 fuentes = [
     ("Arial 12", "Arial", 12),
