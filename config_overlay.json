@@ -1,7 +1,7 @@
 {
     "fuente": "Arial",
-    "tama\u00f1o_fuente": 12,
-    "color_fondo": "white",
-    "color_texto": "black",
+    "tama\u00f1o_fuente": 20,
+    "color_fondo": "black",
+    "color_texto": "white",
     "opacidad": 0.6
 }

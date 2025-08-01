@@ -118,8 +118,8 @@ def cambiar_tipografia(nombre, fuente, tamaño):
     guardar_config()
 
     # Ajustar tamaño ventana automáticamente
-    nuevo_ancho = max(200, tamaño * 18)
-    nuevo_alto = max(50, tamaño * 5)
+    nuevo_ancho = max(200, tamaño * 16)
+    nuevo_alto = max(50, tamaño * 4)
     ventana.geometry(f"{nuevo_ancho}x{nuevo_alto}+{ventana.winfo_x()}+{ventana.winfo_y()}")
 
 # --- Hover cursor ---
